@@ -25,7 +25,7 @@ class FileHandler:
                     temp_dict["type"] = "start"
                 elif grid[row][column].is_end():
                     temp_dict["type"] = "end"
-                elif grid[row][column].is_barrier():
+                elif grid[row][column].is_room():
                     temp_dict["type"] = "room"
                 else:
                     temp_dict["type"] = "empty"

@@ -43,7 +43,7 @@ class Node:
     def is_open(self):
         return self.color is GREEN
 
-    def is_barrier(self):
+    def is_room(self):
         return self.color is BLACK
 
     def is_start(self):
@@ -62,7 +62,7 @@ class Node:
     def make_open(self):
         self.color = GREEN
 
-    def make_barrier(self):
+    def make_room(self):
         self.color = BLACK
 
     def make_start(self):
