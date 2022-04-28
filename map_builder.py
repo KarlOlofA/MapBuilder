@@ -27,8 +27,11 @@ class MapBuilder:
         self.nodes = self.make_grid()
 
         # Define base start and end nodes
-        self.start = None
-        self.end = None
+
+        self.start_end = {
+            "start": None,
+            "end": None
+        }
 
         self.run = True
         self.started = False
@@ -61,8 +64,10 @@ class MapBuilder:
             pos = pygame.mouse.get_pos()
 
             if pos[0] >= self.width:
+
                 # Sidebar interaction
-                self.sidebar.handle_interaction(pos, self.nodes)
+                self.sidebar.handle_interaction(pos, self.nodes, self.start_end)
+
             elif pos[0] < self.width - 20 and pos[1] < self.height - 20:  # <--- This needs fixing but works for now.
 
                 # Grid interaction
@@ -70,14 +75,14 @@ class MapBuilder:
 
                 node = self.nodes[row][col]
 
-                if not self.start and not node.is_end():
-                    self.start = node
-                    self.start.make_start()
-                elif not self.end and not node.is_start():
-                    self.end = node
-                    self.end.make_end()
-                elif node is not self.end and node is not self.start:
-                    node.make_barrier()
+                if not self.start_end["start"] and not node.is_end():
+                    self.start_end["start"] = node
+                    self.start_end["start"].make_start()
+                elif not self.start_end["end"] and not node.is_start():
+                    self.start_end["end"] = node
+                    self.start_end["end"].make_end()
+                elif node is not self.start_end["end"] and node is not self.start_end["start"]:
+                    node.make_room()
 
         elif pygame.mouse.get_pressed()[2]:  # Right, get node and reset it to white.
 
@@ -93,14 +98,8 @@ class MapBuilder:
                 elif node is self.end:
                     self.end = None
                     node.reset()
-                elif node.is_barrier():
+                elif node.is_room():
                     node.reset()
-
-    # @staticmethod
-    # def h(p1, p2):
-    #     x1, y1, = p1
-    #     x2, y2 = p2
-    #     return abs(x1 - x2) + abs(y1 - y2)
 
     def make_grid(self):
         grid = []
